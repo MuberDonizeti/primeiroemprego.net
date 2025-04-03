@@ -10,30 +10,40 @@ async function fazerLogin(event) {
         const storageKey = tipoUsuario === 'candidato' ? 'candidatos' : 'empresas';
         const usuarios = JSON.parse(localStorage.getItem(storageKey)) || [];
         
-        // Procurar usuário
-        const usuario = usuarios.find(u => u.email === email && u.senha === senha);
+        console.log('Dados do localStorage:', usuarios); // Debug
+        console.log('Tentativa de login:', { email, tipoUsuario }); // Debug
         
-        if (usuario) {
-            // Verificar se o tipo de usuário corresponde
-            if (usuario.tipo !== tipoUsuario) {
-                alert('Tipo de usuário incorreto!');
-                return false;
-            }
-            
-            // Salvar informações do usuário logado
-            localStorage.setItem('usuarioLogado', JSON.stringify({
-                ...usuario,
-                tipoUsuario
-            }));
-            
-            // Redirecionar para a dashboard específica
-            if (tipoUsuario === 'empresa') {
-                window.location.href = './dashboard-empresa.html';
-            } else {
-                window.location.href = './dashboard-candidato.html';
-            }
+        // Procurar usuário pelo email primeiro
+        const usuarioEncontrado = usuarios.find(u => u.email === email);
+        
+        if (!usuarioEncontrado) {
+            alert(`Não existe ${tipoUsuario} cadastrado com este email.`);
+            return false;
+        }
+        
+        // Verificar a senha
+        if (usuarioEncontrado.senha !== senha) {
+            alert('Senha incorreta!');
+            return false;
+        }
+        
+        // Verificar se o tipo de usuário corresponde
+        if (usuarioEncontrado.tipo !== tipoUsuario) {
+            alert(`Este email está cadastrado como ${usuarioEncontrado.tipo}, não como ${tipoUsuario}.`);
+            return false;
+        }
+        
+        // Login bem-sucedido
+        localStorage.setItem('usuarioLogado', JSON.stringify({
+            ...usuarioEncontrado,
+            tipoUsuario
+        }));
+        
+        // Redirecionar para a dashboard específica
+        if (tipoUsuario === 'empresa') {
+            window.location.href = './dashboard-empresa.html';
         } else {
-            alert('Email ou senha incorretos!');
+            window.location.href = './dashboard-candidato.html';
         }
     } catch (error) {
         console.error('Erro ao fazer login:', error);
