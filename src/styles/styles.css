@@ -221,3 +221,95 @@ body {
         display: block;
     }
 }
+
+/* Seção de Vagas */
+.jobs-section {
+    padding: 4rem 2rem;
+    background-color: #f5f5f5;
+}
+
+.jobs-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+    font-size: 2rem;
+}
+
+.vagas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.vaga-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.vaga-card:hover {
+    transform: translateY(-5px);
+}
+
+.vaga-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.vaga-card p {
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vaga-card i {
+    color: #3498db;
+}
+
+.vaga-footer {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.vaga-footer span {
+    background: #e1f0ff;
+    color: #3498db;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.btn-candidatar {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background: #3498db;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-candidatar:hover {
+    background: #2980b9;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .vagas-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .jobs-section {
+        padding: 2rem 1rem;
+    }
+}

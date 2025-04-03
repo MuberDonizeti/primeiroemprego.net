@@ -127,30 +127,157 @@ body {
 /* Vagas Grid */
 .vagas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    padding: 2rem 0;
+    margin-top: 2rem;
+}
+
+.vaga-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.vaga-card:hover {
+    transform: translateY(-5px);
+}
+
+.vaga-detalhes-completo {
+    padding: 1rem;
+    color: var(--text-color);
+}
+
+.vaga-detalhes-completo h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.vaga-detalhes-completo h4 {
+    color: var(--secondary-color);
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+.info-grupo p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.info-grupo i {
+    color: var(--primary-color);
+    width: 20px;
+}
+
+.descricao-grupo p, 
+.requisitos-grupo p, 
+.beneficios-grupo p {
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.candidatos-grupo li {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: #f5f5f5;
+    border-radius: 8px;
+    color: var(--text-color);
+}
+
+.vaga-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.vaga-card p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.vaga-card i {
+    width: 20px;
+    color: #3498db;
+}
+
+.vaga-detalhes {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.indice {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    font-size: 0.875rem;
+    color: #999;
+}
+
+.no-vagas {
+    text-align: center;
+    color: #666;
+    grid-column: 1 / -1;
+    padding: 2rem;
+}
+
+.vaga-footer {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.vaga-footer span {
+    background: #e1f0ff;
+    color: #3498db;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.indice {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
 }
 
 /* Modal Styles */
 .modal {
-    display: none; /* Hide by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
     z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Remove as classes não utilizadas */
 .modal.active {
-    display: flex;
-    opacity: 1;
+    display: block;
 }
 
 .modal-content {
