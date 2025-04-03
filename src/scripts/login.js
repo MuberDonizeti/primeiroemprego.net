@@ -62,6 +62,19 @@ function inicializarAdmin() {
 // Executar ao carregar a página
 inicializarAdmin();
 
+document.addEventListener('DOMContentLoaded', function() {
+    const userTypeButtons = document.querySelectorAll('.user-type-btn');
+    const tipoUsuarioInput = document.getElementById('tipoUsuario');
+
+    userTypeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            userTypeButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            tipoUsuarioInput.value = this.dataset.type;
+        });
+    });
+});
+
 function mostrarRegistro() {
     // Implementar lógica de registro
     alert('Funcionalidade de registro em desenvolvimento');

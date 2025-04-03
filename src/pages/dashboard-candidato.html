@@ -4,72 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard do Candidato - PrimeiroEmprego.Net</title>
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/dashCandidato.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <header class="header">
-        <div class="header-content">
-            <div class="logo">PrimeiroEmprego.Net</div>
-            <div class="user-info">
-                <span id="userName">Candidato</span>
-                <a href="./index.html" onclick="logout()" class="btn-logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Sair
-                </a>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="./index.html">PrimeiroEmprego.Net</a>
             </div>
-        </div>
+            <div class="nav-links">
+                <div class="user-info">
+                    <span id="userName">Candidato</span>
+                    <a href="./index.html" onclick="logout()" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <!-- Sistema de Notificação -->
     <div id="notification" class="notification"></div>
 
-    <main class="hero-section">
-        <div class="container">
-            <div class="hero-content">
+    <main class="main-content">
+        <div class="dashboard-container">
+            <section class="welcome-section">
                 <h1>Painel do Candidato</h1>
-                <p>Encontre e candidate-se às melhores vagas</p>
-                
-                <!-- Seção de Pesquisa de Vagas -->
-                <div class="search-section">
-                    <div class="search-form">
-                        <div class="search-group">
-                            <div class="input-wrapper">
-                                <i class="fas fa-search"></i>
-                                <input type="text" id="searchInput" class="search-input" placeholder="Buscar vagas...">
-                            </div>
-                            <button onclick="buscarVagas()" class="btn-search">Buscar</button>
+                <p class="subtitle">Encontre e candidate-se às melhores vagas</p>
+            </section>
+
+            <section class="search-section">
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Buscar vagas...">
                         </div>
+                        <button onclick="buscarVagas()" class="search-button">
+                            <span>Buscar</span>
+                        </button>
                     </div>
                 </div>
+            </section>
 
-                <!-- Seção de Vagas -->
-                <section class="vagas-section">
-                    <h2>Vagas Disponíveis</h2>
-                    <div id="vagasDisponiveis" class="vagas-grid">
+            <section class="content-section">
+                <div class="section-wrapper">
+                    <div class="section-header">
+                        <h2>Vagas Disponíveis</h2>
+                    </div>
+                    <div id="vagasDisponiveis" class="cards-grid">
                         <!-- As vagas serão carregadas dinamicamente aqui -->
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <!-- Seção de Minhas Candidaturas -->
-                <section class="candidaturas-section">
-                    <h2>Minhas Candidaturas</h2>
-                    <div id="minhasCandidaturas" class="vagas-grid">
+            <section class="content-section">
+                <div class="section-wrapper">
+                    <div class="section-header">
+                        <h2>Minhas Candidaturas</h2>
+                    </div>
+                    <div id="minhasCandidaturas" class="cards-grid">
                         <!-- As candidaturas serão carregadas dinamicamente aqui -->
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- Modal de Detalhes da Vaga -->
     <div id="vagaModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitle">Detalhes da Vaga</h2>
-            <div id="modalContent"></div>
-            <button id="btnCandidatar" class="btn-primary">Candidatar-se</button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Detalhes da Vaga</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="modalContent" class="modal-body"></div>
+            <div class="modal-footer">
+                <button id="btnCandidatar" class="btn-primary">Candidatar-se</button>
+            </div>
         </div>
     </div>
 
