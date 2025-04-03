@@ -10,8 +10,15 @@
 <body>
     <div class="login-container">
         <div class="login-box">
-            <h2>Preencha os campos abaixo:</h2>
+            <h2>Login</h2>
             <form id="loginForm" onsubmit="return fazerLogin(event)">
+                <div class="form-group">
+                    <label for="tipoUsuario">Tipo de Usuário:</label>
+                    <select id="tipoUsuario" required>
+                        <option value="candidato">Candidato</option>
+                        <option value="empresa">Empresa</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" required>
@@ -22,10 +29,13 @@
                 </div>
                 <button type="submit" class="btn-primary">Entrar</button>
             </form>
-            <!-- Atualizar apenas a seção register-link -->
             <p class="register-link">
-                Não tem uma conta? <a href="./registro.html">Registre-se</a>
+                Não tem uma conta? Registre-se como:
             </p>
+            <div class="register-options">
+                <a href="./registro.html" class="btn-secondary">Candidato</a>
+                <a href="./registro-empresa.html" class="btn-secondary">Empresa</a>
+            </div>
         </div>
     </div>
     <script src="../scripts/login.js"></script>

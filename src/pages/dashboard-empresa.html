@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard da Empresa - PrimeiroEmprego.Net</title>
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">PrimeiroEmprego.Net</div>
+            <div class="user-info">
+                <span id="empresaName">Empresa</span>
+                <a href="./index.html" onclick="logout()" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sistema de Notificação -->
+    <div id="notification" class="notification"></div>
+
+    <main class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Painel da Empresa</h1>
+                <p>Gerencie suas vagas e visualize candidaturas</p>
+                
+                <div class="dashboard-actions">
+                    <button class="action-btn primary" onclick="abrirModalNovaVaga()">
+                        <i class="fas fa-plus"></i>
+                        Nova Vaga
+                    </button>
+                </div>
+
+                <!-- Seção de Vagas Publicadas -->
+                <section class="vagas-section">
+                    <h2>Minhas Vagas</h2>
+                    <div id="minhasVagas" class="vagas-grid">
+                        <!-- As vagas serão carregadas dinamicamente aqui -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Nova Vaga/Edição -->
+    <div id="vagaModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Nova Vaga</h2>
+            <form id="vagaForm" onsubmit="return salvarVaga(event)">
+                <div class="form-group">
+                    <label for="titulo">Título da Vaga:</label>
+                    <input type="text" id="titulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="localizacao">Localização:</label>
+                    <input type="text" id="localizacao" required>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <textarea id="descricao" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="requisitos">Requisitos:</label>
+                    <textarea id="requisitos" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="salario">Salário:</label>
+                    <input type="text" id="salario" required>
+                </div>
+                <input type="hidden" id="vagaId">
+                <button type="submit" class="btn-primary">Salvar Vaga</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Candidaturas -->
+    <div id="candidaturasModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Candidaturas Recebidas</h2>
+            <div id="listaCandidaturas">
+                <!-- As candidaturas serão carregadas dinamicamente aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/dashboard-empresa.js"></script>
+</body>
+</html>
