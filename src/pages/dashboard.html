@@ -22,6 +22,9 @@
         </div>
     </header>
 
+    <!-- Sistema de Notificação -->
+    <div id="notification" class="notification"></div>
+
     <main class="hero-section">
         <div class="container">
             <div class="hero-content">
@@ -154,6 +157,25 @@
             </div>
         </div>
 
+        <!-- Modal de Exclusão de Vaga -->
+        <div id="excluirVagaModal" class="modal">
+            <div class="modal-content">
+                <h2>Excluir Vaga</h2>
+                <form id="excluirVagaForm">
+                    <div class="form-group">
+                        <label for="vagaIndexExcluir">Índice da Vaga:</label>
+                        <input type="number" id="vagaIndexExcluir" required>
+                    </div>
+                    <div class="form-warning">
+                        <p>⚠️ Atenção: Esta ação não pode ser desfeita!</p>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit btn-danger">Confirmar Exclusão</button>
+                        <button type="button" class="btn-cancel" onclick="cancelarExclusao()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="container">
             <div id="listaVagas" class="vagas-grid"></div>
         </div>

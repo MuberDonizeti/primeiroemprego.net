@@ -133,6 +133,20 @@ function exibirVagas() {
 }
 
 // Manipulador do formulário de nova vaga
+// Função para mostrar notificação
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+
+    // Esconde a notificação após 3 segundos
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+// Atualizar o manipulador do formulário de nova vaga
 document.getElementById('vagaForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -155,8 +169,59 @@ document.getElementById('vagaForm').addEventListener('submit', function(e) {
     
     cancelarForm();
     exibirVagas();
-    alert('Vaga cadastrada com sucesso!');
+    showNotification('Vaga cadastrada com sucesso!');
 });
+
+// Atualizar o manipulador do formulário de exclusão
+document.getElementById('excluirVagaForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const vagaIndex = parseInt(document.getElementById('vagaIndexExcluir').value);
+    let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+    
+    if (vagaIndex >= 0 && vagaIndex < vagas.length) {
+        vagas.splice(vagaIndex, 1);
+        localStorage.setItem('vagas', JSON.stringify(vagas));
+        
+        cancelarExclusao();
+        exibirVagas();
+        showNotification('Vaga excluída com sucesso!');
+    } else {
+        showNotification('Índice de vaga inválido! Por favor, verifique o número do índice.', 'error');
+    }
+});
+
+// Atualizar o manipulador do formulário de candidato
+document.getElementById('candidatoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const vagaIndex = parseInt(document.getElementById('vagaIndex').value);
+    let vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+    
+    if (vagaIndex >= 0 && vagaIndex < vagas.length) {
+        const candidato = {
+            nome: document.getElementById('nomeCandidato').value,
+            email: document.getElementById('emailCandidato').value,
+            telefone: document.getElementById('telefoneCandidato').value,
+            experiencia: document.getElementById('experienciaCandidato').value
+        };
+        
+        // Adiciona o candidato à vaga
+        if (!vagas[vagaIndex].candidatos) {
+            vagas[vagaIndex].candidatos = [];
+        }
+        vagas[vagaIndex].candidatos.push(candidato);
+        
+        // Atualiza o localStorage
+        localStorage.setItem('vagas', JSON.stringify(vagas));
+        
+        cancelarFormCandidato();
+        showNotification('Candidatura realizada com sucesso!');
+    } else {
+        showNotification('Índice de vaga inválido!', 'error');
+    }
+});
+
 
 // Carregar vagas quando a página for carregada
 document.addEventListener('DOMContentLoaded', exibirVagas);
@@ -206,3 +271,17 @@ document.getElementById('candidatoForm').addEventListener('submit', function(e) 
         alert('Índice de vaga inválido!');
     }
 });
+
+
+// Função para abrir o modal de exclusão
+function excluirVaga() {
+    const modal = document.getElementById('excluirVagaModal');
+    modal.style.display = 'block';
+}
+
+// Função para fechar o modal de exclusão
+function cancelarExclusao() {
+    const modal = document.getElementById('excluirVagaModal');
+    modal.style.display = 'none';
+    document.getElementById('excluirVagaForm').reset();
+}
