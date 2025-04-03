@@ -3,6 +3,9 @@
     --secondary-color: #E91E63;
     --background-color: #f5f5f5;
     --text-color: #333;
+    --white: #ffffff;
+    --danger: #dc3545;
+    --success: #28a745;
 }
 
 * {
