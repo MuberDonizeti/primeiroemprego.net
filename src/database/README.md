@@ -40,9 +40,10 @@ Este diretório contém os arquivos necessários para configurar o banco de dado
    DB_PORT=5432
    ```
 
-5. Execute o script SQL para criar as tabelas:
+5. Execute o script SQL para criar as tabelas (escolha uma das opções):
+   Opção 1 - Usando o caminho completo do PostgreSQL:
    ```bash
-   psql -U seu_usuario -d primeiroemprego -f schema.sql
+   "C:\Program Files\PostgreSQL\{versão}\bin\psql" -U seu_usuario -d primeiroemprego -f schema.sql
    ```
 
 ## Estrutura do Banco de Dados
