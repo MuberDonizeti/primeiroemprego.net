@@ -71,21 +71,40 @@ async function registrarEmpresa(event) {
     };
 
     try {
-        // Aqui você implementará a lógica de conexão com o backend
-        // Por enquanto, vamos simular salvando no localStorage
-        const empresas = JSON.parse(localStorage.getItem('empresas') || '[]');
+        // Verificar se já existe uma empresa com o mesmo CNPJ ou email
+        // Usando a API em vez do localStorage
+        const response = await fetch('/api/empresas/verificar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cnpj, email })
+        });
+
+        const data = await response.json();
         
-        // Verificar se já existe empresa com mesmo CNPJ ou email
-        if (empresas.some(emp => emp.cnpj === cnpj || emp.email === email)) {
+        if (data.exists) {
             alert('Já existe uma empresa cadastrada com este CNPJ ou email!');
             return false;
         }
 
-        empresas.push(empresaData);
-        localStorage.setItem('empresas', JSON.stringify(empresas));
+        // Cadastrar a empresa no banco de dados
+        const cadastroResponse = await fetch('/api/empresas/cadastrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(empresaData)
+        });
 
-        alert('Empresa cadastrada com sucesso!');
-        window.location.href = './login.html';
+        const cadastroData = await cadastroResponse.json();
+
+        if (cadastroResponse.ok) {
+            alert('Empresa cadastrada com sucesso!');
+            window.location.href = './login.html';
+        } else {
+            alert(`Erro ao cadastrar empresa: ${cadastroData.message}`);
+        }
     } catch (error) {
         console.error('Erro ao cadastrar empresa:', error);
         alert('Erro ao cadastrar empresa. Tente novamente.');

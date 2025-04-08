@@ -6,24 +6,23 @@ async function fazerLogin(event) {
     const senha = document.getElementById('senha').value;
     
     try {
-        // Recuperar dados do localStorage baseado no tipo de usuário
-        const storageKey = tipoUsuario === 'candidato' ? 'candidatos' : 'empresas';
-        const usuarios = JSON.parse(localStorage.getItem(storageKey)) || [];
+        // Fazer login usando a API em vez do localStorage
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, senha, tipoUsuario })
+        });
         
-        // Procurar usuário
-        const usuario = usuarios.find(u => u.email === email && u.senha === senha);
+        const data = await response.json();
         
-        if (usuario) {
-            // Verificar se o tipo de usuário corresponde
-            if (usuario.tipo !== tipoUsuario) {
-                alert('Tipo de usuário incorreto!');
-                return false;
-            }
-            
+        if (response.ok) {
             // Salvar informações do usuário logado
             localStorage.setItem('usuarioLogado', JSON.stringify({
-                ...usuario,
-                tipoUsuario
+                ...data.usuario,
+                tipoUsuario,
+                token: data.token // Armazenar o token JWT para autenticação
             }));
             
             // Redirecionar para a dashboard específica
@@ -33,7 +32,7 @@ async function fazerLogin(event) {
                 window.location.href = './dashboard-candidato.html';
             }
         } else {
-            alert('Email ou senha incorretos!');
+            alert(data.message || 'Email ou senha incorretos!');
         }
     } catch (error) {
         console.error('Erro ao fazer login:', error);

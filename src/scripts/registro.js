@@ -92,21 +92,40 @@ async function registrarCandidato(event) {
     };
 
     try {
-        // Aqui você implementará a lógica de conexão com o backend
-        // Por enquanto, vamos simular salvando no localStorage
-        const candidatos = JSON.parse(localStorage.getItem('candidatos') || '[]');
+        // Verificar se já existe um candidato com o mesmo CPF ou email
+        // Usando a API em vez do localStorage
+        const response = await fetch('/api/candidatos/verificar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cpf, email })
+        });
+
+        const data = await response.json();
         
-        // Verificar se já existe candidato com mesmo CPF ou email
-        if (candidatos.some(cand => cand.cpf === cpf || cand.email === email)) {
+        if (data.exists) {
             alert('Já existe um candidato cadastrado com este CPF ou email!');
             return false;
         }
 
-        candidatos.push(candidatoData);
-        localStorage.setItem('candidatos', JSON.stringify(candidatos));
+        // Cadastrar o candidato no banco de dados
+        const cadastroResponse = await fetch('/api/candidatos/cadastrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(candidatoData)
+        });
 
-        alert('Cadastro realizado com sucesso!');
-        window.location.href = './login.html';
+        const cadastroData = await cadastroResponse.json();
+
+        if (cadastroResponse.ok) {
+            alert('Cadastro realizado com sucesso!');
+            window.location.href = './login.html';
+        } else {
+            alert(`Erro ao cadastrar candidato: ${cadastroData.message}`);
+        }
     } catch (error) {
         console.error('Erro ao cadastrar candidato:', error);
         alert('Erro ao realizar cadastro. Tente novamente.');
