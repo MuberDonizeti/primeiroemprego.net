@@ -91,37 +91,50 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 1rem 2rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 8px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     border: none;
+    font-size: 1rem;
 }
 
 .action-btn i {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .action-btn.primary {
     background: var(--secondary-color);
     color: var(--white);
+    border: none;
+}
+
+.action-btn.primary:hover {
+    background: #d81b5c;
+    transform: translateY(-2px);
 }
 
 .action-btn.secondary {
     background: var(--white);
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+}
+
+.action-btn.secondary:hover {
+    background: rgba(233, 30, 99, 0.1);
+    transform: translateY(-2px);
 }
 
 .action-btn.danger {
     background: var(--danger);
     color: var(--white);
+    border: none;
 }
 
-.action-btn:hover {
+.action-btn.danger:hover {
+    background: #c82333;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 /* Vagas Grid */

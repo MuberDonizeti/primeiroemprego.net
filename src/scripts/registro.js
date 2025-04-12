@@ -2,7 +2,29 @@
 function validarCPF(cpf) {
     cpf = cpf.replace(/[^\d]/g, '');
     if (cpf.length !== 11) return false;
-    return true; // Implementar validação completa posteriormente
+    
+    // Verifica se todos os dígitos são iguais
+    if (/^(\d)\1{10}$/.test(cpf)) return false;
+    
+    // Validação do primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    let digitoVerificador1 = resto > 9 ? 0 : resto;
+    if (digitoVerificador1 !== parseInt(cpf.charAt(9))) return false;
+    
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    let digitoVerificador2 = resto > 9 ? 0 : resto;
+    if (digitoVerificador2 !== parseInt(cpf.charAt(10))) return false;
+    
+    return true;
 }
 
 // Função para validar o formato do telefone
@@ -92,43 +114,35 @@ async function registrarCandidato(event) {
     };
 
     try {
-        // Verificar se já existe um candidato com o mesmo CPF ou email
-        // Usando a API em vez do localStorage
-        const response = await fetch('/api/candidatos/verificar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ cpf, email })
-        });
-
-        const data = await response.json();
+        // Verificar se já existe um candidato com o mesmo CPF ou email no localStorage
+        const candidatos = JSON.parse(localStorage.getItem('candidatos')) || [];
         
-        if (data.exists) {
-            alert('Já existe um candidato cadastrado com este CPF ou email!');
+        const cpfExists = candidatos.some(c => c.cpf === cpf);
+        const emailExists = candidatos.some(c => c.email === email);
+        
+        if (cpfExists || emailExists) {
+            if (cpfExists) {
+                alert('Já existe um candidato cadastrado com este CPF!');
+            } else if (emailExists) {
+                alert('Já existe um candidato cadastrado com este email!');
+            }
             return false;
         }
 
-        // Cadastrar o candidato no banco de dados
-        const cadastroResponse = await fetch('/api/candidatos/cadastrar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(candidatoData)
-        });
+        // Adicionar o novo candidato ao array e salvar no localStorage
+        candidatos.push(candidatoData);
+        localStorage.setItem('candidatos', JSON.stringify(candidatos));
 
-        const cadastroData = await cadastroResponse.json();
+        alert('Cadastro realizado com sucesso!');
+        window.location.href = './login.html';
 
-        if (cadastroResponse.ok) {
-            alert('Cadastro realizado com sucesso!');
-            window.location.href = './login.html';
-        } else {
-            alert(`Erro ao cadastrar candidato: ${cadastroData.message}`);
-        }
     } catch (error) {
         console.error('Erro ao cadastrar candidato:', error);
-        alert('Erro ao realizar cadastro. Tente novamente.');
+        if (error.message.includes('Failed to fetch') || !navigator.onLine) {
+            alert('Erro de conexão. Verifique sua internet e tente novamente.');
+        } else {
+            alert(`Erro ao realizar cadastro: ${error.message}`);
+        }
     }
 
     return false;
