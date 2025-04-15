@@ -5,6 +5,16 @@
     box-sizing: border-box;
 }
 
+:root {
+    --primary-color: #1a1a2e;
+    --secondary-color: #00B894;
+    --background-color: #f5f5f5;
+    --text-color: #2d3436;
+    --white: #ffffff;
+    --danger: #dc3545;
+    --success: #28a745;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
@@ -21,6 +31,8 @@ body {
     top: 0;
     z-index: 1000;
 }
+
+
 
 .navbar {
     max-width: 1200px;

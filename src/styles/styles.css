@@ -6,65 +6,9 @@
     --white: #ffffff;
     --danger: #dc3545;
     --success: #28a745;
-
-    /* Dark theme colors */
-    --dark-background: #1a1a2e;
-    --dark-surface: #242438;
-    --dark-text: #f5f5f5;
-    --dark-text-secondary: #b8b8c9;
-    --dark-primary: #00B894;
-    --dark-secondary: #00B894;
-    --dark-border: #34344a;
 }
 
-[data-theme='dark'] {
-    --background-color: var(--dark-background);
-    --text-color: var(--dark-text);
-    --primary-color: var(--dark-primary);
-    --secondary-color: var(--dark-secondary);
-}
 
-[data-theme='dark'] .header {
-    background-color: var(--dark-surface);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-[data-theme='dark'] .search-form {
-    background: var(--dark-surface);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
-
-[data-theme='dark'] .search-input {
-    background: var(--dark-background);
-    border-color: var(--dark-border);
-    color: var(--dark-text);
-}
-
-[data-theme='dark'] .feature-card {
-    background: var(--dark-surface);
-    color: var(--dark-text);
-}
-
-[data-theme='dark'] .vaga-card {
-    background: var(--dark-surface);
-    color: var(--dark-text);
-}
-
-[data-theme='dark'] .vaga-card h3 {
-    color: var(--dark-text);
-}
-
-[data-theme='dark'] .vaga-card p {
-    color: var(--dark-text-secondary);
-}
-
-[data-theme='dark'] .features {
-    background: var(--dark-background);
-}
-
-[data-theme='dark'] .input-wrapper i {
-    color: var(--dark-text-secondary);
-}
 
 * {
     margin: 0;
