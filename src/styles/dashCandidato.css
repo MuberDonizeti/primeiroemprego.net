@@ -18,21 +18,19 @@
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 /* Header Styles */
 .header {
-    background-color: #ffffff;
+    background-color: var(--white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
 }
-
-
 
 .navbar {
     max-width: 1200px;
@@ -46,7 +44,7 @@ body {
 .logo a {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #0066cc;
+    color: var(--primary-color);
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -68,13 +66,13 @@ body {
 
 #userName {
     font-weight: 500;
-    color: #2c3e50;
+    color: var(--primary-color);
 }
 
 .btn-logout {
     padding: 0.6rem 1.2rem;
-    background-color: #dc3545;
-    color: white;
+    background-color: var(--danger);
+    color: var(--white);
     border-radius: 6px;
     text-decoration: none;
     display: flex;
