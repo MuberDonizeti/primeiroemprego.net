@@ -1,22 +1,28 @@
-const LINKEDIN_API_URL = 'https://api.linkedin.com/v2/jobs';
+// Configuração da API do Google Jobs
+const GOOGLE_JOBS_API_KEY = 'API_KEY'; 
+const GOOGLE_JOBS_API_URL = 'https://jobs.googleapis.com/v4/jobs:search';
 
-// Função para buscar vagas no LinkedIn
-async function buscarVagasLinkedIn(cargo, localizacao) {
+async function buscarVagas(query, location) {
     try {
-        const headers = {
-            'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
-            'Content-Type': 'application/json'
+        const searchParams = {
+            requestMetadata: {
+                userId: 'user-' + Math.random().toString(36).substring(7),
+                sessionId: 'session-' + Math.random().toString(36).substring(7),
+                domain: 'primeiroemprego.net'
+            },
+            searchMode: 'JOB_SEARCH',
+            jobQuery: {
+                query: query,
+                location: location
+            }
         };
 
-        const params = new URLSearchParams({
-            keywords: cargo,
-            location: localizacao,
-            count: 10 
-        });
-
-        const response = await fetch(`${LINKEDIN_API_URL}/search?${params}`, {
-            method: 'GET',
-            headers: headers
+        const response = await fetch(`${GOOGLE_JOBS_API_URL}?key=${GOOGLE_JOBS_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(searchParams)
         });
 
         if (!response.ok) {
@@ -24,52 +30,49 @@ async function buscarVagasLinkedIn(cargo, localizacao) {
         }
 
         const data = await response.json();
-        exibirResultados(data);
+        exibirResultados(data.jobs || []);
     } catch (error) {
         console.error('Erro:', error);
-        mostrarErro('Ocorreu um erro ao buscar as vagas. Tente novamente mais tarde.');
+        mostrarErro('Ocorreu um erro ao buscar as vagas. Tente novamente.');
     }
 }
 
-// Função para exibir os resultados da busca
-function exibirResultados(data) {
-    const resultadosContainer = document.createElement('div');
-    resultadosContainer.className = 'resultados-busca';
+function exibirResultados(jobs) {
+    const resultsContainer = document.createElement('div');
+    resultsContainer.className = 'search-results';
     
-    if (!data.elements || data.elements.length === 0) {
-        resultadosContainer.innerHTML = '<p class="no-vagas">Nenhuma vaga encontrada.</p>';
-        return;
+    if (jobs.length === 0) {
+        resultsContainer.innerHTML = '<p class="no-results">Nenhuma vaga encontrada.</p>';
+    } else {
+        jobs.forEach(job => {
+            const jobCard = document.createElement('div');
+            jobCard.className = 'job-card';
+            jobCard.innerHTML = `
+                <div class="job-header">
+                    <h3>${job.title}</h3>
+                    <span class="job-company">${job.company}</span>
+                </div>
+                <div class="job-info">
+                    <p><i class="fas fa-map-marker-alt"></i> ${job.locations.join(', ')}</p>
+                    ${job.salary ? `<p><i class="fas fa-money-bill-wave"></i> ${job.salary}</p>` : ''}
+                </div>
+                <div class="job-description">
+                    <p>${job.description}</p>
+                </div>
+                <div class="job-footer">
+                    <a href="${job.applicationUrl}" target="_blank" class="btn-apply">Candidatar-se</a>
+                </div>
+            `;
+            resultsContainer.appendChild(jobCard);
+        });
     }
 
-    data.elements.forEach(vaga => {
-        const vagaCard = document.createElement('div');
-        vagaCard.className = 'vaga-card';
-        vagaCard.innerHTML = `
-            <div class="vaga-header">
-                <h3>${vaga.title}</h3>
-                <span class="vaga-empresa">${vaga.company.name}</span>
-            </div>
-            <div class="vaga-info">
-                <p><i class="fas fa-map-marker-alt"></i> ${vaga.location.name}</p>
-                <p><i class="fas fa-briefcase"></i> ${vaga.employmentStatus}</p>
-            </div>
-            <div class="vaga-descricao">
-                <p>${vaga.description}</p>
-            </div>
-            <div class="vaga-footer">
-                <a href="${vaga.applyUrl}" target="_blank" class="btn-candidatar">Candidatar-se no LinkedIn</a>
-            </div>
-        `;
-        resultadosContainer.appendChild(vagaCard);
-    });
-
-    // Adicionar os resultados à página
-    const mainContent = document.querySelector('.hero-section');
-    const existingResults = document.querySelector('.resultados-busca');
+    // Remover resultados anteriores e adicionar novos
+    const existingResults = document.querySelector('.search-results');
     if (existingResults) {
-        mainContent.removeChild(existingResults);
+        existingResults.remove();
     }
-    mainContent.appendChild(resultadosContainer);
+    document.querySelector('.hero-section').appendChild(resultsContainer);
 }
 
 function mostrarErro(mensagem) {
@@ -77,25 +80,29 @@ function mostrarErro(mensagem) {
     errorDiv.className = 'error-message';
     errorDiv.textContent = mensagem;
     
-    const mainContent = document.querySelector('.hero-section');
-    mainContent.appendChild(errorDiv);
+    const existingError = document.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
     
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
+    document.querySelector('.search-container').appendChild(errorDiv);
+    setTimeout(() => errorDiv.remove(), 5000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const btnSearch = document.querySelector('.btn-search');
-    btnSearch.addEventListener('click', () => {
-        const cargo = document.querySelector('input[placeholder="Cargo ou palavra-chave"]').value;
-        const localizacao = document.querySelector('input[placeholder="Localização"]').value;
-        
-        if (!cargo) {
+    const searchButton = document.querySelector('.btn-search');
+    const keywordInput = document.querySelector('input[placeholder="Cargo ou palavra-chave"]');
+    const locationInput = document.querySelector('input[placeholder="Localização"]');
+
+    searchButton.addEventListener('click', () => {
+        const keyword = keywordInput.value.trim();
+        const location = locationInput.value.trim();
+
+        if (!keyword) {
             mostrarErro('Por favor, insira um cargo ou palavra-chave.');
             return;
         }
-        
-        buscarVagasLinkedIn(cargo, localizacao);
+
+        buscarVagas(keyword, location);
     });
 });
