@@ -1,73 +1,55 @@
-// Configuração da API do Google Jobs
-const GOOGLE_JOBS_API_KEY = 'API_KEY'; 
-const GOOGLE_JOBS_API_URL = 'https://jobs.googleapis.com/v4/jobs:search';
-
 async function buscarVagas(query, location) {
     try {
-        const searchParams = {
-            requestMetadata: {
-                userId: 'user-' + Math.random().toString(36).substring(7),
-                sessionId: 'session-' + Math.random().toString(36).substring(7),
-                domain: 'primeiroemprego.net'
-            },
-            searchMode: 'JOB_SEARCH',
-            jobQuery: {
-                query: query,
-                location: location
-            }
-        };
-
-        const response = await fetch(`${GOOGLE_JOBS_API_URL}?key=${GOOGLE_JOBS_API_KEY}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(searchParams)
+        const vagas = JSON.parse(localStorage.getItem('vagas')) || [];
+        
+        const vagasFiltradas = vagas.filter(vaga => {
+            const matchQuery = vaga.titulo.toLowerCase().includes(query.toLowerCase()) ||
+                             vaga.descricao.toLowerCase().includes(query.toLowerCase()) ||
+                             vaga.empresa.toLowerCase().includes(query.toLowerCase());
+            
+            const matchLocation = !location || 
+                                vaga.localizacao.toLowerCase().includes(location.toLowerCase());
+            
+            return matchQuery && matchLocation;
         });
 
-        if (!response.ok) {
-            throw new Error('Erro ao buscar vagas');
-        }
-
-        const data = await response.json();
-        exibirResultados(data.jobs || []);
+        exibirResultados(vagasFiltradas);
     } catch (error) {
         console.error('Erro:', error);
         mostrarErro('Ocorreu um erro ao buscar as vagas. Tente novamente.');
     }
 }
 
-function exibirResultados(jobs) {
+function exibirResultados(vagas) {
     const resultsContainer = document.createElement('div');
     resultsContainer.className = 'search-results';
     
-    if (jobs.length === 0) {
+    if (vagas.length === 0) {
         resultsContainer.innerHTML = '<p class="no-results">Nenhuma vaga encontrada.</p>';
     } else {
-        jobs.forEach(job => {
+        vagas.forEach(vaga => {
             const jobCard = document.createElement('div');
             jobCard.className = 'job-card';
             jobCard.innerHTML = `
                 <div class="job-header">
-                    <h3>${job.title}</h3>
-                    <span class="job-company">${job.company}</span>
+                    <h3>${vaga.titulo}</h3>
+                    <span class="job-company">${vaga.empresa}</span>
                 </div>
                 <div class="job-info">
-                    <p><i class="fas fa-map-marker-alt"></i> ${job.locations.join(', ')}</p>
-                    ${job.salary ? `<p><i class="fas fa-money-bill-wave"></i> ${job.salary}</p>` : ''}
+                    <p><i class="fas fa-map-marker-alt"></i> ${vaga.localizacao}</p>
+                    ${vaga.salario ? `<p><i class="fas fa-money-bill-wave"></i> ${vaga.salario}</p>` : ''}
                 </div>
                 <div class="job-description">
-                    <p>${job.description}</p>
+                    <p>${vaga.descricao}</p>
                 </div>
                 <div class="job-footer">
-                    <a href="${job.applicationUrl}" target="_blank" class="btn-apply">Candidatar-se</a>
+                    <button onclick="abrirDetalhesVaga(${vaga.id})" class="btn-apply">Ver Detalhes</button>
                 </div>
             `;
             resultsContainer.appendChild(jobCard);
         });
     }
 
-    // Remover resultados anteriores e adicionar novos
     const existingResults = document.querySelector('.search-results');
     if (existingResults) {
         existingResults.remove();
