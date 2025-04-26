@@ -1,5 +1,10 @@
 const vagas = []
 
+// Inicializa os dados de exemplo no localStorage
+if (!localStorage.getItem('vagas')) {
+    localStorage.setItem('vagas', JSON.stringify(vagasExemplo));
+}
+
 function listarVagas() {
     const listaElement = document.getElementById('listaVagas')
     listaElement.innerHTML = ''

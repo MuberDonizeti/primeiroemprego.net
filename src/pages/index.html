@@ -31,13 +31,24 @@
                     <div class="search-group">
                         <div class="input-wrapper">
                             <i class="fas fa-search"></i>
-                            <input type="text" class="search-input" id="keyword" placeholder="Cargo ou palavra-chave">
+                            <input type="text" 
+                                   class="search-input" 
+                                   id="keyword" 
+                                   placeholder="Cargo ou palavra-chave"
+                                   aria-label="Buscar por cargo ou palavra-chave">
                         </div>
                         <div class="input-wrapper">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" class="search-input" id="location" placeholder="Localização">
+                            <input type="text" 
+                                   class="search-input" 
+                                   id="location" 
+                                   placeholder="Localização"
+                                   aria-label="Buscar por localização">
                         </div>
-                        <button class="btn-search" type="button">Procurar vagas</button>
+                        <button class="btn-search" type="button">
+                            <i class="fas fa-search"></i>
+                            Procurar vagas
+                        </button>
                     </div>
                     <small>Exemplo: desenvolvedor full-stack, front-end, back-end</small>
                 </div>
@@ -46,23 +57,20 @@
 
         <section class="features">
             <div class="features-grid">
-
                 <div class="feature-card">
                     <h3>Área do Candidato</h3>
                     <p>Acesse sua conta e gerencie suas candidaturas</p>
                     <a href="./login.html" class="btn-feature">Acessar Conta</a>
                 </div>
-                <!-- Update feature card link as well -->
                 <div class="feature-card">
                     <h3>Recrutadores</h3>
                     <p>Crie sua conta grátis e gerencie suas vagas</p>
                     <a href="registro-empresa.html" class="btn-feature">Criar Conta</a>
                 </div>
-
             </div>
         </section>
-
     </main>
+
     <script src="../scripts/index.js"></script>
     <script src="../scripts/search.js"></script>
 </body>
